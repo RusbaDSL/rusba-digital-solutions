@@ -21,9 +21,9 @@ module.exports = {
                 "crypto": require.resolve("crypto-browserify"),
                 "stream": require.resolve("stream-browserify"),
                 "path": require.resolve("path-browserify"),
-                "process": require.resolve("process/browser"),
                 "buffer": require.resolve("buffer/"),
                 "util": require.resolve("util/"),
+                "process": false,
             };
 
             // Remove better-sqlite3 from the bundle
@@ -32,15 +32,20 @@ module.exports = {
                 'better-sqlite3': 'better-sqlite3',
             };
 
+            // Filter out any existing DefinePlugin instances
+            const plugins = webpackConfig.plugins.filter(
+                plugin => plugin.constructor.name !== 'DefinePlugin'
+            );
+
             // Add webpack plugins for polyfills
             webpackConfig.plugins = [
-                ...webpackConfig.plugins,                new webpack.ProvidePlugin({
+                ...plugins,
+                new webpack.ProvidePlugin({
                     Buffer: ['buffer', 'Buffer'],
-                    process: 'process',
+                    process: require.resolve('process/browser'),
                 }),
                 new webpack.DefinePlugin({
-                    'process.env': JSON.stringify(process.env),
-                    'process.browser': true,
+                    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
                 }),
             ];
 
