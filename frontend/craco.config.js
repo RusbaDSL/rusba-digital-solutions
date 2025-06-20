@@ -14,9 +14,18 @@ module.exports = {
             }
             webpackConfig.resolve.extensions.push('.mjs');
 
+            // Add plugins for process polyfill
+            webpackConfig.plugins = [
+                ...webpackConfig.plugins,
+                new webpack.ProvidePlugin({
+                    process: 'process/browser',
+                }),
+            ];
+
             // Add fallbacks for Node.js core modules
             webpackConfig.resolve.fallback = {
                 ...webpackConfig.resolve.fallback,
+                "process": require.resolve("process/browser"),
                 "fs": false,
                 "crypto": require.resolve("crypto-browserify"),
                 "stream": require.resolve("stream-browserify"),
