@@ -1,7 +1,8 @@
 {
   "name": "rusba-digital-solutions-frontend",
   "version": "0.1.0",
-  "private": true,  "dependencies": {
+  "private": true,
+  "dependencies": {
     "@craco/craco": "^7.1.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
@@ -34,10 +35,9 @@
     "path": false,
     "fs": false,
     "process": "process/browser"
-  },
-  "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+  },  "scripts": {
+    "start": "env-cmd -f .env.development craco start",
+    "build": "env-cmd -f .env.production craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -58,5 +58,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0"
   }
 }
