@@ -1,13 +1,12 @@
 [build]
   base = "frontend"
   publish = "build"
-  command = "npm install && REACT_APP_API_URL=$REACT_APP_API_URL craco build"
+  command = "NODE_ENV=production npm install && npm run build"
 
 [build.environment]
   NODE_VERSION = "18"
   NODE_ENV = "production"
   CI = "true"
-  REACT_APP_API_URL = "https://rusba-digital-solutions-api.onrender.com/api"
 
 [[redirects]]
   from = "/*"
