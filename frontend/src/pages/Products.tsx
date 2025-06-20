@@ -1,65 +1,102 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { apiService, Product } from '../services/api';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import ErrorMessage from '../components/common/ErrorMessage';
 import VideoPlayer from '../components/common/VideoPlayer';
 import './Products.css';
 
+interface ProductItem {
+    id: number;
+    title: string;
+    description: string;
+    features: string[];
+    image?: string;
+    video_url?: string;
+    icon?: string;
+}
+
+const products: ProductItem[] = [
+    {
+        id: 1,
+        title: "eVoting Platform",
+        description: "A comprehensive electronic voting system designed for secure, transparent, and accessible elections.",
+        features: [
+            "End-to-end encryption for vote security",
+            "Blockchain-based vote verification",
+            "Multi-factor authentication",
+            "Real-time result tallying",
+            "Accessibility features for all voters"
+        ],
+        icon: "fas fa-vote-yea",
+        video_url: "https://res.cloudinary.com/dfsfskmha/video/upload/v1750454071/rusba/election-in-africa_udfrw3.mp4" // Replace with actual video
+    },
+    {
+        id: 2,
+        title: "Smart Home Automation Kit",
+        description: "An integrated IoT solution for modern home automation and energy management.",
+        features: [
+            "Central control hub with WiFi/Bluetooth",
+            "Smart lighting and climate control",
+            "Energy consumption monitoring",
+            "Mobile app integration",
+            "Voice control support"
+        ],
+        icon: "fas fa-home",
+        image: "/images/dev-boards.jfif"
+    },
+    {
+        id: 3,
+        title: "Industrial IoT Sensors",
+        description: "High-precision sensors for industrial monitoring and automation applications.",
+        features: [
+            "Real-time data collection",
+            "Long-range wireless connectivity",
+            "Extended battery life",
+            "Industrial-grade durability",
+            "Cloud dashboard integration"
+        ],
+        icon: "fas fa-industry",
+        image: "/images/team-working.jpg"
+    },
+    {
+        id: 4,
+        title: "Digital Signage Solution",
+        description: "Cloud-managed digital signage system for businesses and institutions.",
+        features: [
+            "Remote content management",
+            "Real-time updates",
+            "Schedule-based content",
+            "Analytics dashboard",
+            "Multi-display support"
+        ],
+        icon: "fas fa-display"
+    }
+];
+
 const Products: React.FC = () => {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                setIsLoading(true);
-                setError(null);
-                const data = await apiService.getAllProducts();
-                console.log('Fetched products:', data);
-                setProducts(data);
-            } catch (err) {
-                setError('Failed to load products. Please try again later.');
-                console.error('Error fetching products:', err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchProducts();
-    }, []);
-
-    const renderMedia = (product: Product) => {
-        console.log('Rendering media for product:', {
-            id: product.id,
-            name: product.name,
-            videoUrl: product.video_url,
-            imageUrl: product.image
-        });
-
-        const videoUrl = product.video_url?.trim();
-        if (videoUrl) {
-            console.log('Attempting to render video:', videoUrl);
-            return <VideoPlayer url={videoUrl} title={product.name} />;
+    const renderMedia = (product: ProductItem) => {
+        if (product.video_url?.trim()) {
+            return (
+                <div className="product-video">
+                    <VideoPlayer url={product.video_url} title={product.title} />
+                </div>
+            );
         }
         
-        const imageUrl = product.image?.trim();
-        if (imageUrl) {
-            console.log('Falling back to image:', imageUrl);
-            return <img src={imageUrl} alt={product.name} />;
+        if (product.image) {
+            return (
+                <div className="product-image">
+                    <img src={product.image} alt={product.title} />
+                </div>
+            );
         }
-
-        console.warn('No media available for product:', product.name);
-        return null;
-    };
-
-    if (isLoading) return <LoadingSpinner />;
-    if (error) return <ErrorMessage message={error} />;
-
-    return (
+        
+        return (
+            <div className="product-icon">
+                <i className={product.icon}></i>
+            </div>
+        );
+    };    return (
         <div className="products-container">
-            <motion.h1
+            <motion.h1 
                 className="products-title"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -67,6 +104,27 @@ const Products: React.FC = () => {
             >
                 Our Products
             </motion.h1>
+            
+            <motion.div 
+                className="products-intro"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
+            >
+                <p>
+                    Discover our innovative range of digital products designed to transform and 
+                    elevate your business operations. From secure voting systems to smart automation 
+                    solutions, each product is crafted with cutting-edge technology and 
+                    backed by our commitment to excellence.
+                </p>
+                <p>
+                    Our products combine robust security, user-friendly interfaces, and 
+                    scalable architecture to meet the evolving needs of modern businesses 
+                    and organizations. Experience the power of digital innovation with our 
+                    carefully engineered solutions.
+                </p>
+            </motion.div>
+
             <div className="products-grid">
                 {products.map((product, index) => (
                     <motion.div
@@ -76,26 +134,23 @@ const Products: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: index * 0.1 }}
                     >
-                        <div className={`product-media ${product.video_url?.trim() ? 'has-video' : ''}`}>
-                            {renderMedia(product)}
-                        </div>
+                        {renderMedia(product)}
                         <div className="product-content">
-                            <h3>{product.name}</h3>
-                            <p className="product-description">
-                                {product.description.split('\n').map((line, i) => (
-                                    <React.Fragment key={i}>
-                                        {line}
-                                        <br />
-                                    </React.Fragment>
+                            <h3>{product.title}</h3>
+                            <p className="product-description">{product.description}</p>
+                            <ul className="product-features">
+                                {product.features.map((feature, i) => (
+                                    <motion.li
+                                        key={i}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.3, delay: index * 0.1 + i * 0.1 }}
+                                    >
+                                        <i className="fas fa-check"></i>
+                                        {feature}
+                                    </motion.li>
                                 ))}
-                            </p>
-                            <div className="product-features">
-                                {product.features.split(',').map((feature, i) => (
-                                    <span key={i} className="feature-tag">
-                                        {feature.trim()}
-                                    </span>
-                                ))}
-                            </div>
+                            </ul>
                         </div>
                     </motion.div>
                 ))}

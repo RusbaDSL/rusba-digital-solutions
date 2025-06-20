@@ -10,7 +10,7 @@ const Footer = () => {
           <h3>Contact Us</h3>
           <p>8 Peace Avenue, Rumuigbo New Layout<br />Port Harcourt, Nigeria</p>
           <p>Email: contact@rusba.com</p>
-          <p>Phone: <Link to="tel:+2348128753069">+234 812 875 3069</Link>, <Link to="tel:+2348128753069">+234 812 875 3069</Link> </p>
+          <p>Phone: <Link to="tel:+2348128753069">+234 812 875 3069</Link>, <Link to="tel:+2348051264318">+234 805 126 4318</Link> </p>
         </div>
 
         <div className="footer-section">

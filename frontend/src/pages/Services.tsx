@@ -1,39 +1,73 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { apiService, Service } from '../services/api';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import ErrorMessage from '../components/common/ErrorMessage';
 import VideoPlayer from '../components/common/VideoPlayer';
 import './Services.css';
 
+interface ServiceItem {
+    id: number;
+    title: string;
+    description: string;
+    image?: string;
+    video_url?: string;
+    icon?: string;
+}
+
+const services: ServiceItem[] = [
+    {
+        id: 1,
+        title: "Software Development",
+        description: "End-to-end software development services tailored to your needs.\nSpecializing in web applications, mobile apps, and enterprise solutions.\nAgile development methodology with continuous integration and deployment.",
+        icon: "fas fa-code",
+        image: "/images/team-working.jpg"
+    },
+    {
+        id: 2,
+        title: "IoT Solutions",
+        description: "Custom Internet of Things (IoT) solutions for business automation.\nSensor network design and implementation.\nReal-time monitoring and data analytics.\nCloud integration and edge computing solutions.",
+        icon: "fas fa-microchip",
+        image: "/images/dev-boards.jfif"
+    },
+    {
+        id: 3,
+        title: "Digital Transformation",
+        description: "Comprehensive digital transformation services.\nLegacy system modernization and cloud migration.\nBusiness process automation and workflow optimization.\nDigital strategy consulting and implementation.",
+        icon: "fas fa-digital-tachograph",
+        video_url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" // Replace with actual video
+    },
+    {
+        id: 4,
+        title: "Consulting & Training",
+        description: "Expert technical consulting services.\nTechnology stack assessment and recommendations.\nCustom training programs for development teams.\nBest practices and architecture review.",
+        icon: "fas fa-users-gear"
+    },
+    {
+        id: 5,
+        title: "Cloud Solutions",
+        description: "Cloud infrastructure design and implementation.\nMigration services for AWS, Azure, and Google Cloud.\nServerless architecture and microservices.\nCloud cost optimization and management.",
+        icon: "fas fa-cloud",
+    },
+    {
+        id: 6,
+        title: "Security Services",
+        description: "Comprehensive cybersecurity solutions.\nSecurity audits and vulnerability assessment.\nImplementation of security best practices.\nSecure development lifecycle integration.",
+        icon: "fas fa-shield-halved",
+    }
+];
+
 const Services: React.FC = () => {
-    const [services, setServices] = useState<Service[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchServices = async () => {
-            try {
-                setIsLoading(true);
-                setError(null);
-                const data = await apiService.getAllServices();
-                setServices(data);
-            } catch (err) {
-                setError('Failed to load services. Please try again later.');
-                console.error('Error fetching services:', err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchServices();
-    }, []);
-
-    const renderMedia = (service: Service) => {
+    const renderMedia = (service: ServiceItem) => {
         if (service.video_url?.trim()) {
             return (
                 <div className="service-video">
                     <VideoPlayer url={service.video_url} title={service.title} />
+                </div>
+            );
+        }
+        
+        if (service.image) {
+            return (
+                <div className="service-image">
+                    <img src={service.image} alt={service.title} />
                 </div>
             );
         }
@@ -43,12 +77,7 @@ const Services: React.FC = () => {
                 <i className={service.icon}></i>
             </div>
         );
-    };
-
-    if (isLoading) return <LoadingSpinner />;
-    if (error) return <ErrorMessage message={error} />;
-
-    return (
+    };    return (
         <div className="services-container">
             <motion.h1 
                 className="services-title"
@@ -58,6 +87,26 @@ const Services: React.FC = () => {
             >
                 Our Services
             </motion.h1>
+            
+            <motion.div 
+                className="services-intro"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7 }}
+            >
+                <p>
+                    At Rusba Digital Solutions, we combine cutting-edge technology with industry expertise 
+                    to deliver innovative solutions that drive your business forward. Our comprehensive suite 
+                    of services spans from custom software development to advanced IoT implementations, 
+                    ensuring that your digital transformation journey is seamless and successful.
+                </p>
+                <p>
+                    Whether you're looking to modernize your existing systems, implement new technologies, 
+                    or need expert guidance on your digital strategy, our team of skilled professionals is 
+                    here to help you achieve your goals with precision and excellence.
+                </p>
+            </motion.div>
+
             <div className="services-grid">
                 {services.map((service, index) => (
                     <motion.div
