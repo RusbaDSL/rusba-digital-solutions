@@ -1,7 +1,9 @@
 services:
-  - type: web
-    name: rusba-digital-solutions-api
-    env: node    region: singapore  # Choose the region closest to your users
+  - type: web    name: rusba-digital-solutions-api
+    env: node
+    region: singapore  # Choose the region closest to your users
+    runtime: node
+    nodeVersion: 18.19.0
     buildCommand: |
       cd server && 
       npm ci --include=dev &&
