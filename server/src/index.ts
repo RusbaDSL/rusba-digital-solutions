@@ -1,39 +1,49 @@
 import express from 'express';
 import cors from 'cors';
 import { initializeSchema } from './database/schema';
-import { errorHandler } from './middleware/errorHandler';
 import authRoutes from './routes/auth';
-import servicesRoutes from './routes/services';
 import productsRoutes from './routes/products';
+import servicesRoutes from './routes/services';
 import clientsRoutes from './routes/clients';
+import { errorHandler } from './middleware/errorHandler';
+import { authRateLimiter, apiRateLimiter } from './middleware/rateLimiter';
 
 const app = express();
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Initialize database schema
+initializeSchema().catch(console.error);
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/services', servicesRoutes);
-app.use('/api/products', productsRoutes);
-app.use('/api/clients', clientsRoutes);
-
-// Error handling middleware - must be last
-app.use(errorHandler);
-
-// Initialize database and start server
-const start = async () => {
-    try {
-        await initializeSchema();
-        app.listen(port, () => {
-            console.log(`Server running on port ${port}`);
-        });
-    } catch (error) {
-        console.error('Failed to start server:', error);
-        process.exit(1);
-    }
+// CORS configuration
+const corsOptions = {
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    credentials: true,
+    optionsSuccessStatus: 200
 };
 
-start();
+// Middleware
+app.use(cors(corsOptions));
+app.use(express.json());
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Apply rate limiters to specific route groups
+app.use('/api/auth', authRateLimiter, authRoutes);
+
+// Apply general API rate limiter to other routes
+app.use('/api', apiRateLimiter);
+
+// Routes
+app.use('/api/products', productsRoutes);
+app.use('/api/services', servicesRoutes);
+app.use('/api/clients', clientsRoutes);
+
+// Error handling
+app.use(errorHandler);
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

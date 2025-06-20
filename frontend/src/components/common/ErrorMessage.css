@@ -1,0 +1,21 @@
+.error-message {
+    background: rgba(255, 0, 0, 0.1);
+    color: #ff6b6b;
+    padding: 1rem;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.no-data {
+    text-align: center;
+    padding: 2rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.success-message {
+    background: rgba(0, 255, 0, 0.1);
+    color: #4caf50;
+    padding: 1rem;
+    margin: 1rem 0;
+    text-align: center;
+}
