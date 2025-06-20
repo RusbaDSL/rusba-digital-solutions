@@ -5,15 +5,21 @@ services:
     region: singapore  # Choose the region closest to your users
     runtime: node
     nodeVersion: 18.19.0    buildCommand: |
-      cd server && 
+      cd server &&
+      mkdir -p data &&
       npm ci --include=dev &&
       npm run build &&
-      npm run init:admin
+      DATABASE_PATH="$PWD/data/rusba.db" npm run init:admin
     startCommand: cd server && npm run start
-    healthCheckPath: /api/health
-    envVars:
+    healthCheckPath: /api/health    envVars:
       - key: NODE_ENV
-        value: production      - key: PORT
-        value: 10000      - key: CORS_ORIGIN
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CORS_ORIGIN
         value: "https://rusba-ng.netlify.app"
+      - key: DATABASE_PATH
+        value: "/opt/render/project/src/server/data/rusba.db"
+      - key: JWT_SECRET
+        sync: false # This will prompt to set the value in Render.com dashboard
     autoDeploy: true

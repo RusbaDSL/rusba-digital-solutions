@@ -1,7 +1,12 @@
 import sqlite3 from 'sqlite3';
 import path from 'path';
 
-const dbPath = path.join(__dirname, '../../rusba.db');
+// Use environment variable for database path in production, fallback to local path in development
+const dbPath = process.env.DATABASE_PATH 
+    ? path.resolve(process.env.DATABASE_PATH)
+    : path.join(__dirname, '../../rusba.db');
+
+console.log('Using database path:', dbPath);
 const db = new sqlite3.Database(dbPath);
 
 // Create promisified versions of database methods
