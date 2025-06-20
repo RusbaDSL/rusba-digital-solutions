@@ -15,7 +15,6 @@ services:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 10000
-      - key: CORS_ORIGIN
-        value: https://rusba-digital-solutions.onrender.com  # Update this with your frontend URL
+        value: 10000      - key: CORS_ORIGIN
+        value: https://rusba-digital-solutions.netlify.app  # Netlify frontend URL
     autoDeploy: true

@@ -16,7 +16,11 @@ initializeSchema().catch(console.error);
 
 // CORS configuration
 const corsOptions = {
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: [
+        process.env.FRONTEND_URL || 'http://localhost:3000',
+        'https://rusba-digital-solutions.netlify.app',
+        'http://localhost:3000'
+    ],
     credentials: true,
     optionsSuccessStatus: 200
 };
