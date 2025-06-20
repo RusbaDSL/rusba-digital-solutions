@@ -4,11 +4,11 @@ services:
     env: node
     region: singapore  # Choose the region closest to your users
     runtime: node
-    nodeVersion: 18.19.0
-    buildCommand: |
+    nodeVersion: 18.19.0    buildCommand: |
       cd server && 
       npm ci --include=dev &&
-      npm run build
+      npm run build &&
+      npm run init:admin
     startCommand: cd server && npm run start
     healthCheckPath: /api/health
     envVars:
