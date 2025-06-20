@@ -9,7 +9,6 @@ services:
       mkdir -p data &&
       npm ci --include=dev &&
       npm run build &&
-      npm run build:admin &&
       DATABASE_PATH="$PWD/data/rusba.db" npm run init:admin
     startCommand: cd server && npm run start
     healthCheckPath: /api/health    envVars:
