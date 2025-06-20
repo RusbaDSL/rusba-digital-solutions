@@ -13,8 +13,7 @@ services:
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
-        value: production
-      - key: PORT
+        value: production      - key: PORT
         value: 10000      - key: CORS_ORIGIN
-        value: https://rusba-digital-solutions.netlify.app  # Netlify frontend URL
+        value: "https://rusba-ng.netlify.app"
     autoDeploy: true

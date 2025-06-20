@@ -15,15 +15,27 @@ const PORT = process.env.PORT || 5000;
 initializeSchema().catch(console.error);
 
 // CORS configuration
+const allowedOrigins = [
+    'http://localhost:3000',
+    'https://rusba-ng.netlify.app'
+];
+
 const corsOptions = {
-    origin: [
-        process.env.FRONTEND_URL || 'http://localhost:3000',
-        'https://rusba-digital-solutions.netlify.app',
-        'http://localhost:3000'
-    ],
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
     optionsSuccessStatus: 200
 };
+
+// Enable preflight requests for all routes
+app.options('*', cors(corsOptions));
 
 // Middleware
 app.use(cors(corsOptions));
