@@ -2,8 +2,7 @@ services:
   - type: web
     name: rusba-digital-solutions-api
     env: node
-    region: singapore  # Choose the region closest to your users
-    buildCommand: npm install && cd server && npm install && npm run build
+    region: singapore  # Choose the region closest to your users      buildCommand: cd server && npm install && npm run build
     startCommand: cd server && npm run start
     healthCheckPath: /api/health
     envVars:
