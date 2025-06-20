@@ -1,17 +1,16 @@
-{
-    "name": "rusba-digital-solutions-api",
-    "env": "node",
-    "buildCommand": "cd server && npm install && npm run build",
-    "startCommand": "cd server && npm start",
-    "healthCheckPath": "/api/health",
-    "envVars": [
-        {
-            "key": "NODE_ENV",
-            "value": "production"
-        },
-        {
-            "key": "PORT",
-            "value": "10000"
-        }
-    ]
-}
+services:
+  - type: web
+    name: rusba-digital-solutions-api
+    env: node
+    region: singapore  # Choose the region closest to your users
+    buildCommand: cd server && npm install && npm run build
+    startCommand: cd server && npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CORS_ORIGIN
+        value: https://rusba-digital-solutions.onrender.com  # Update this with your frontend URL
+    autoDeploy: true

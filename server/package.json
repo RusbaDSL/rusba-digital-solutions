@@ -2,7 +2,7 @@
   "name": "rusba-digital-solutions-server",
   "version": "1.0.0",
   "main": "src/index.ts",  "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "init:admin": "ts-node src/scripts/initAdmin.ts"
