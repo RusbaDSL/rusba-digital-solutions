@@ -23,18 +23,31 @@ const allowedOrigins = [
     'https://rusba-ng.netlify.app'
 ];
 
+// Get CORS origin from environment variable if set
+const corsOrigin = process.env.CORS_ORIGIN;
+if (corsOrigin && !allowedOrigins.includes(corsOrigin)) {
+    allowedOrigins.push(corsOrigin);
+}
+
+console.log('Allowed CORS origins:', allowedOrigins);
+
 const corsOptions = {
     origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+        console.log('Incoming request from origin:', origin);
+        
         if (!origin || allowedOrigins.includes(origin)) {
+            console.log('Origin allowed:', origin);
             callback(null, true);
         } else {
+            console.log('Origin rejected:', origin);
             callback(new Error('Not allowed by CORS'));
         }
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
+    preflightContinue: false
 };
 
 // Enable preflight requests for all routes
