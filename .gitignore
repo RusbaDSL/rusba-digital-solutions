@@ -12,6 +12,8 @@ node_modules/
 
 # production
 /build
+/frontend/build
+/frontend/dist
 
 # database files
 *.db
