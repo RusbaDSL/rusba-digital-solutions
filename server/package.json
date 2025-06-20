@@ -5,8 +5,9 @@
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "init:admin": "ts-node src/scripts/initAdmin.ts"
-  },  "dependencies": {
+    "build:admin": "tsc src/scripts/initAdmin.ts --outDir dist",
+    "init:admin": "node dist/scripts/initAdmin.js"
+  },"dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
