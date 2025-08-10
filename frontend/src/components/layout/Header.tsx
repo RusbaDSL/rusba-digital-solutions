@@ -11,8 +11,8 @@ const Header = () => {
         whileHover={{ scale: 1.05 }}
       >
         <Link to="/">
-          <img src="/rusba-logo.png" alt="Rusba Digital Solutions" />
-          <h4><center>Rusba Digital<br /> Solutions Limited</center></h4>
+          <img src="/rusba-logo-crp.png" alt="Rusba Digital Solutions"  />
+
         </Link>
       </motion.div>
 

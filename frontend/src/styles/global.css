@@ -188,10 +188,13 @@ body {
   color: var(--primary);
   margin-top: 0;
   text-decoration: none;
+  
 }
 .logo img {
   height: 90px;
   margin-bottom: 0;
+  
+  
 }
 
 nav ul {

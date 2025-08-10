@@ -11,9 +11,16 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: linear-gradient(135deg, rgba(107, 70, 193, 0.2), rgba(159, 122, 234, 0.2));
     margin-bottom: 4rem;
     padding: 4rem 2rem;
+    position: relative;
+}
+
+.hero.glass-card {
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: scroll !important;
 }
 
 .hero h1 {

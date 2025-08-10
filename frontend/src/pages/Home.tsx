@@ -1,14 +1,23 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import heroImage from '../assets/rusba-hero.png';
 import './Home.css';
 
 const Home = () => {
+    const heroStyle = {
+        backgroundImage: `linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(83, 53, 153, 0.6), rgba(104, 33, 247, 0.5)), url(${heroImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+    };
+
     return (
         <div className="container">
             <motion.section 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="hero glass-card"
+                style={heroStyle}
             >
                 <h1>Welcome to Rusba Digital Solutions Limited</h1>
                 <p className="hero-subtitle">Innovative Technology Solutions for Tomorrow's Challenges</p>
