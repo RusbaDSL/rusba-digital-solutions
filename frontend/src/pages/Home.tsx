@@ -1,33 +1,8 @@
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { apiService, Client } from '../services/api';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-import ErrorMessage from '../components/common/ErrorMessage';
 import './Home.css';
 
 const Home = () => {
-    const [clients, setClients] = useState<Client[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchClients = async () => {
-            try {
-                const data = await apiService.getAllClients();
-                setClients(data);
-            } catch (err: any) {
-                setError(err?.message || 'An error occurred fetching clients');
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchClients();
-    }, []);
-
-    if (loading) return <LoadingSpinner />;
-    if (error) return <ErrorMessage message={error} />;
-
     return (
         <div className="container">
             <motion.section 
@@ -128,32 +103,6 @@ const Home = () => {
             </motion.section>
 
             <motion.section 
-                className="clients glass-card"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-            >
-                <h2>Our Trusted Partners</h2>
-                <p className="section-subtitle">Join our growing list of satisfied clients</p>
-                <div className="client-logos">
-                    {clients.length > 0 ? (
-                        clients.map((client) => (
-                            <motion.div 
-                                key={client.id}
-                                className="client-logo-container"
-                                whileHover={{ scale: 1.1 }}
-                            >
-                                <img src={client.logo} alt={client.name} />
-                                <p className="client-name">{client.name}</p>
-                            </motion.div>
-                        ))
-                    ) : (
-                        <p className="no-data">No clients to display</p>
-                    )}
-                </div>
-            </motion.section>
-
-            <motion.section 
                 className="cta-section glass-card"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -163,7 +112,7 @@ const Home = () => {
                 <p>Let's discuss how we can help you achieve your digital goals.</p>
                 <div className="cta-buttons">
                     <Link to="/services" className="cta-button primary">View Our Services</Link>
-                    <a href="mailto:contact@rusba.com" className="cta-button secondary">Contact Us</a>
+                    <Link to="/contact" className="cta-button secondary">Contact Us</Link>
                 </div>
             </motion.section>
         </div>

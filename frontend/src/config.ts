@@ -7,7 +7,7 @@ interface Config {
 
 const config: { [key: string]: Config } = {
     development: {
-        apiUrl: 'http://localhost:5000/api'
+        apiUrl: 'http://localhost:5100/api'
     },
     production: {
         apiUrl: 'https://rusba-digital-solutions-api.onrender.com/api'

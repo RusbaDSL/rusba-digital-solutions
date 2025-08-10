@@ -16,6 +16,21 @@ interface ProductItem {
 const products: ProductItem[] = [
     {
         id: 1,
+        title: "Rusba Rides",
+        description: "Brand new ride-hailing service with innovative features.",
+        features: [
+            "Instant ride booking",
+            "Transparent fare calculation",
+            "Enhanced safety features",
+            "Driver and vehicle verification",
+            "In-app support and feedback"
+        ],
+        icon: "fas fa-display",
+        image: "https://res.cloudinary.com/duduqz7lm/image/upload/v1754766049/rusbarides_ks8mwq.png"
+        
+    },
+    {
+        id: 2,
         title: "eVoting Platform",
         description: "A comprehensive electronic voting system designed for secure, transparent, and accessible elections.",
         features: [
@@ -29,7 +44,7 @@ const products: ProductItem[] = [
         video_url: "https://res.cloudinary.com/dfsfskmha/video/upload/v1750454071/rusba/election-in-africa_udfrw3.mp4" // Replace with actual video
     },
     {
-        id: 2,
+        id: 3,
         title: "Smart Home Automation Kit",
         description: "An integrated IoT solution for modern home automation and energy management.",
         features: [
@@ -43,7 +58,7 @@ const products: ProductItem[] = [
         image: "/images/dev-boards.jfif"
     },
     {
-        id: 3,
+        id: 4,
         title: "Industrial IoT Sensors",
         description: "High-precision sensors for industrial monitoring and automation applications.",
         features: [
@@ -56,19 +71,7 @@ const products: ProductItem[] = [
         icon: "fas fa-industry",
         image: "/images/team-working.jpg"
     },
-    {
-        id: 4,
-        title: "Digital Signage Solution",
-        description: "Cloud-managed digital signage system for businesses and institutions.",
-        features: [
-            "Remote content management",
-            "Real-time updates",
-            "Schedule-based content",
-            "Analytics dashboard",
-            "Multi-display support"
-        ],
-        icon: "fas fa-display"
-    }
+    
 ];
 
 const Products: React.FC = () => {

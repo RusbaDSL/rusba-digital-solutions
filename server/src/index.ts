@@ -1,77 +1,75 @@
 import express from 'express';
 import cors from 'cors';
-import { initializeSchema } from './database/schema';
-import authRoutes from './routes/auth';
-import productsRoutes from './routes/products';
-import servicesRoutes from './routes/services';
-import clientsRoutes from './routes/clients';
+import dotenv from 'dotenv';
+import path from 'path';
+import { Resend } from 'resend';
+import contactRoutes from './routes/contact';
 import { errorHandler } from './middleware/errorHandler';
-import { authRateLimiter, apiRateLimiter } from './middleware/rateLimiter';
+import { apiRateLimiter } from './middleware/rateLimiter';
+
+// Load environment variables from the server directory
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
+console.log('Loading .env from:', path.join(__dirname, '..', '.env'));
+
+// Initialize Resend
+const resendApiKey = process.env.RESEND_API_KEY;
+console.log('Resend API Key length:', resendApiKey ? resendApiKey.length : 'undefined');
+console.log('Resend API Key starts with "re_":', resendApiKey ? resendApiKey.startsWith('re_') : false);
+
+let resend: Resend | null = null;
+if (resendApiKey && resendApiKey !== 're_placeholder_get_your_key_from_resend_dashboard') {
+    resend = new Resend(resendApiKey);
+    console.log('✅ Resend initialized successfully');
+} else {
+    console.log('⚠️ Resend not initialized - running in dev mode');
+    console.log('API key present:', !!resendApiKey);
+    console.log('API key is placeholder:', resendApiKey === 're_placeholder_get_your_key_from_resend_dashboard');
+}
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5100;
 
 // Trust proxy - needed for Render.com
 app.set('trust proxy', 1);
 
-// Initialize database schema
-initializeSchema().catch(console.error);
-
-// CORS configuration
-const allowedOrigins = [
-    'http://localhost:3000',
-    'https://rusba-ng.netlify.app'
-];
-
-// Get CORS origin from environment variable if set
-const corsOrigin = process.env.CORS_ORIGIN;
-if (corsOrigin && !allowedOrigins.includes(corsOrigin)) {
-    allowedOrigins.push(corsOrigin);
-}
-
-console.log('Allowed CORS origins:', allowedOrigins);
-
+// CORS configuration - simplified and more reliable
 const corsOptions = {
-    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-        console.log('Incoming request from origin:', origin);
-        
-        if (!origin || allowedOrigins.includes(origin)) {
-            console.log('Origin allowed:', origin);
-            callback(null, true);
-        } else {
-            console.log('Origin rejected:', origin);
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: ['http://localhost:3000', 'https://rusba-ng.netlify.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
     credentials: true,
-    optionsSuccessStatus: 200,
-    preflightContinue: false
+    preflightContinue: false,
+    optionsSuccessStatus: 200
 };
 
-// Enable preflight requests for all routes
+console.log('Configured CORS origins:', corsOptions.origin);
+console.log('Server will run on port:', PORT);
+
+// Apply CORS before any other middleware
+app.use(cors(corsOptions));
+
+// Explicitly handle preflight OPTIONS requests
 app.options('*', cors(corsOptions));
 
-// Middleware
-app.use(cors(corsOptions));
+// Body parsing middleware
 app.use(express.json());
+
+// Debug middleware to log all requests
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url} from ${req.headers.origin || 'unknown origin'}`);
+    next();
+});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Apply rate limiters to specific route groups
-app.use('/api/auth', authRateLimiter, authRoutes);
-
-// Apply general API rate limiter to other routes
+// Apply general API rate limiter to contact route
 app.use('/api', apiRateLimiter);
 
-// Routes
-app.use('/api/products', productsRoutes);
-app.use('/api/services', servicesRoutes);
-app.use('/api/clients', clientsRoutes);
+// Routes - pass the Resend instance to contact routes
+app.use('/api/contact', contactRoutes(resend));
 
 // Error handling
 app.use(errorHandler);

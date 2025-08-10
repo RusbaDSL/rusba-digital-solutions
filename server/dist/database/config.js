@@ -6,7 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.dbAsync = void 0;
 const sqlite3_1 = __importDefault(require("sqlite3"));
 const path_1 = __importDefault(require("path"));
-const dbPath = path_1.default.join(__dirname, '../../rusba.db');
+// Use environment variable for database path in production, fallback to local path in development
+const dbPath = process.env.DATABASE_PATH
+    ? path_1.default.resolve(process.env.DATABASE_PATH)
+    : path_1.default.join(__dirname, '../../rusba.db');
+console.log('Using database path:', dbPath);
 const db = new sqlite3_1.default.Database(dbPath);
 // Create promisified versions of database methods
 exports.dbAsync = {

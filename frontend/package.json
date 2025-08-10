@@ -24,6 +24,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.0",
     "react-scripts": "5.0.1",
+    "resend": "^6.0.1",
     "stream-browserify": "^3.0.0",
     "typescript": "^4.9.5",
     "util": "^0.12.5",
@@ -35,7 +36,8 @@
     "path": false,
     "fs": false,
     "process": "process/browser"
-  },  "scripts": {
+  },
+  "scripts": {
     "start": "env-cmd -f .env.development craco start",
     "build": "craco build",
     "test": "craco test",

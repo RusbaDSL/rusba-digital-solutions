@@ -1,27 +1,16 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '../../context/AuthContext';
 import './Navigation.css';
 
 const Navigation = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { isAuthenticated, logout } = useAuth();
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        logout();
-        navigate('/');
-    };
 
     const menuItems = [
         { path: '/', label: 'Home' },
         { path: '/services', label: 'Services' },
         { path: '/products', label: 'Products' },
-        ...(isAuthenticated 
-            ? [{ path: '/admin', label: 'Admin' }] 
-            : []
-        ),
+        { path: '/contact', label: 'Contact' },
     ];
 
     return (
@@ -55,28 +44,6 @@ const Navigation = () => {
                                 </Link>
                             </motion.div>
                         ))}
-                        {isAuthenticated ? (
-                            <motion.div whileHover={{ x: 10 }}>
-                                <button 
-                                    onClick={() => {
-                                        handleLogout();
-                                        setIsOpen(false);
-                                    }}
-                                    className="nav-button"
-                                >
-                                    Logout
-                                </button>
-                            </motion.div>
-                        ) : (
-                            <motion.div whileHover={{ x: 10 }}>
-                                <Link 
-                                    to="/login"
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    Login
-                                </Link>
-                            </motion.div>
-                        )}
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -91,20 +58,6 @@ const Navigation = () => {
                             <Link to={item.path}>{item.label}</Link>
                         </motion.li>
                     ))}
-                    {isAuthenticated ? (
-                        <motion.li whileHover={{ y: -2 }}>
-                            <button 
-                                onClick={handleLogout}
-                                className="nav-button"
-                            >
-                                Logout
-                            </button>
-                        </motion.li>
-                    ) : (
-                        <motion.li whileHover={{ y: -2 }}>
-                            <Link to="/login">Login</Link>
-                        </motion.li>
-                    )}
                 </motion.ul>
             </nav>
         </>
