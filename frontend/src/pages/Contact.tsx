@@ -102,7 +102,7 @@ const Contact: React.FC = () => {
                         <i className="material-icons">location_on</i>
                         <div>
                             <h3>Address</h3>
-                            <p>Port Harcourt, Rivers State, Nigeria</p>
+                            <p>8 Peacee Avenue, Rumuigbo New Layout <br /> Port Harcourt, Rivers State, Nigeria</p>
                         </div>
                     </div>
 
@@ -110,7 +110,7 @@ const Contact: React.FC = () => {
                         <i className="material-icons">phone</i>
                         <div>
                             <h3>Phone</h3>
-                            <p>+234 xxx xxx xxxx</p>
+                            <p>+234 803 338 0055 <br /> +234 805 126 4318 </p>
                         </div>
                     </div>
 
@@ -118,7 +118,7 @@ const Contact: React.FC = () => {
                         <i className="material-icons">email</i>
                         <div>
                             <h3>Email</h3>
-                            <p>contact@rusba.com</p>
+                            <p>contact@rusbadsl.com.ng</p>
                         </div>
                     </div>
 

@@ -34,7 +34,7 @@ app.set('trust proxy', 1);
 
 // CORS configuration - simplified and more reliable
 const corsOptions = {
-    origin: ['http://localhost:3000', 'https://rusba-ng.netlify.app'],
+    origin: ['http://localhost:3000', 'https://rusba-ng.netlify.app', 'https://rusbadsl.com.ng'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
     credentials: true,
